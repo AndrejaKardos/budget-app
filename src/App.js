@@ -3,12 +3,15 @@ import './App.css';
 function App() {
   return (
     <div className="app__container">
-      <header className="app__container--header">
+      <div className="app__container--header">
         <h2 className="">Budget App</h2>
-      </header>
-      <footer>
+      </div>
+      <div className="app__container--body">
+        Calculations here
+      </div>
+      <div className="app__container--footer">
         Footer here
-      </footer>
+      </div>
     </div>
   );
 }
