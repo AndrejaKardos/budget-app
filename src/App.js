@@ -6,6 +6,9 @@ function App() {
       <header className="app__container--header">
         <h2 className="">Budget App</h2>
       </header>
+      <footer>
+        Footer here
+      </footer>
     </div>
   );
 }
