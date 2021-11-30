@@ -1,7 +1,7 @@
 
 const incomeTaxApi = {
     calculateIncomeTax: (income: number):Promise<number> => {
-        let incomeTaxPaid;
+        let incomeTaxPaid: number;
         if (income <= 18200) {
             incomeTaxPaid = 0;
         } else if (income <= 45000) {
@@ -13,7 +13,12 @@ const incomeTaxApi = {
         } else {
             incomeTaxPaid = 51667 + (income - 180000) * 0.45
         }
-        return Promise.resolve(incomeTaxPaid);
+
+        return new Promise((resolve, _) => {
+            setTimeout(() => {
+                resolve(incomeTaxPaid)
+            }, 3000);
+        })
     }
 }
 

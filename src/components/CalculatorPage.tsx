@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import incomeTaxApi from '../api/incomeTaxApi'
+import { ApiStatus } from '../utils/api'
 import { formatMoney } from '../utils/money'
 
 interface Props {
@@ -8,6 +9,7 @@ interface Props {
 const CalculatorPage: React.FC<Props> = (props) => {
     const [income, setIncome] = useState<number>(0);
     const [incomeTax, setIncomeTax] = useState<number>(0);
+    const [incomeTaxState, setIncomeTaxState] = useState<ApiStatus>(ApiStatus.OK);
 
     const onIncomeChange = (str: string) => {
         if (!/^[0-9]*$/.test(str)) {
@@ -19,7 +21,11 @@ const CalculatorPage: React.FC<Props> = (props) => {
     }
 
     useEffect(() => {
-        incomeTaxApi.calculateIncomeTax(income).then(r => setIncomeTax(r))
+        setIncomeTaxState(ApiStatus.LOADING)
+        incomeTaxApi.calculateIncomeTax(income).then(r => {
+            setIncomeTax(r)
+            setIncomeTaxState(ApiStatus.OK)
+        })
     }, [income])
 
     return (
@@ -28,7 +34,9 @@ const CalculatorPage: React.FC<Props> = (props) => {
             <input value={income} onChange={(e) => onIncomeChange(e.currentTarget.value)} />
 
             <div>Your income is: {formatMoney(income)}</div>
-            <div>You are paying {formatMoney(incomeTax)} in income tax</div>
+
+            { incomeTaxState === ApiStatus.LOADING && <div>We are calculating your income tax...</div>}
+            { incomeTaxState === ApiStatus.OK && <div>You are paying {formatMoney(incomeTax)} in income tax</div>}
         </div>
     );
 }
