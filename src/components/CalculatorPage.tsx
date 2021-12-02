@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import incomeTaxApi from '../api/incomeTaxApi'
-import { ApiStatus } from '../utils/api'
+import useApiRequest from '../hooks/useApiRequest'
 import { formatMoney } from '../utils/money'
 
 interface Props {
@@ -9,7 +9,8 @@ interface Props {
 const CalculatorPage: React.FC<Props> = (props) => {
     const [income, setIncome] = useState<number>(0);
     const [incomeTax, setIncomeTax] = useState<number>(0);
-    const [incomeTaxState, setIncomeTaxState] = useState<ApiStatus>(ApiStatus.OK);
+
+    const { send: sendIncomeTaxCalcRequest, ...incomeTaxCalcState } = useApiRequest<number, number>(incomeTaxApi.calculateIncomeTax)
 
     const onIncomeChange = (str: string) => {
         if (!/^[0-9]*$/.test(str)) {
@@ -21,12 +22,8 @@ const CalculatorPage: React.FC<Props> = (props) => {
     }
 
     useEffect(() => {
-        setIncomeTaxState(ApiStatus.LOADING)
-        incomeTaxApi.calculateIncomeTax(income).then(r => {
-            setIncomeTax(r)
-            setIncomeTaxState(ApiStatus.OK)
-        })
-    }, [income])
+        sendIncomeTaxCalcRequest(income).then(r => setIncomeTax(r))
+    }, [sendIncomeTaxCalcRequest, income])
 
     return (
         <div>
@@ -35,8 +32,8 @@ const CalculatorPage: React.FC<Props> = (props) => {
 
             <div>Your income is: {formatMoney(income)}</div>
 
-            { incomeTaxState === ApiStatus.LOADING && <div>We are calculating your income tax...</div>}
-            { incomeTaxState === ApiStatus.OK && <div>You are paying {formatMoney(incomeTax)} in income tax</div>}
+            { incomeTaxCalcState.isLoading && <div>We are calculating your income tax...</div>}
+            { incomeTaxCalcState.isOk && <div>You are paying {formatMoney(incomeTax)} in income tax</div>}
         </div>
     );
 }
