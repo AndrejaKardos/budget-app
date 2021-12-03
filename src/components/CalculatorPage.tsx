@@ -3,6 +3,13 @@ import incomeTaxApi from '../api/incomeTaxApi'
 import useApiRequest from '../hooks/useApiRequest'
 import { formatMoney } from '../utils/money'
 
+const paymentFrequencyOptions = [
+  {name: 'annually', paymentsPerYear: 1},
+  {name: 'monthly', paymentsPerYear: 12},
+  {name: 'fortnightly', paymentsPerYear: 26},
+  {name: 'weekly', paymentsPerYear: 52} 
+]
+
 interface Props {
 }
 
@@ -32,9 +39,9 @@ const CalculatorPage: React.FC<Props> = (props) => {
             <input value={income} onChange={(e) => onIncomeChange(e.currentTarget.value)} />
 
             <select value={paymentFrequency} onChange={(e) => setPaymentFrequency(parseInt(e.currentTarget.value))}>
-              <option value={1}>annually</option>
-              <option value={12}>monthly</option>
-              <option value={52}>weekly</option>
+              {paymentFrequencyOptions.map(pfo =>
+                <option value={pfo.paymentsPerYear}>{pfo.name}</option>
+              )}
             </select>
 
             <div>Your income is: {formatMoney(income)}</div>
@@ -44,7 +51,7 @@ const CalculatorPage: React.FC<Props> = (props) => {
               <>
                 <div>You are paying {formatMoney(incomeTax)} in income tax</div>
                 <div>You are receiving {formatMoney(income - incomeTax)} income after tax</div>
-                <div>You are receiving {formatMoney((income - incomeTax)/paymentFrequency)} income per payment period</div>
+                <div>You are receiving {formatMoney((income - incomeTax)/paymentFrequency)} income {paymentFrequencyOptions.find(pfo => paymentFrequency === pfo.paymentsPerYear)!.name}</div>
               </>
             }
         </div>
