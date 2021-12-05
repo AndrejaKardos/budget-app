@@ -53,7 +53,9 @@ const CalculatorPage: React.FC<Props> = (props) => {
         }
       >
         {paymentFrequencyOptions.map((pfo) => (
-          <option value={pfo.paymentsPerYear}>{pfo.name}</option>
+          <option key={pfo.paymentsPerYear} value={pfo.paymentsPerYear}>
+            {pfo.name}
+          </option>
         ))}
       </select>
 
