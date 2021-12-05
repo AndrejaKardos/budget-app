@@ -3,7 +3,12 @@ import incomeTaxApi from "../api/incomeTaxApi";
 import useApiRequest from "../hooks/useApiRequest";
 import { formatMoney } from "../utils/money";
 
-const paymentFrequencyOptions = [
+interface PaymentFrequencyOption {
+  name: string;
+  paymentsPerYear: number;
+}
+
+const paymentFrequencyOptions: PaymentFrequencyOption[] = [
   { name: "annually", paymentsPerYear: 1 },
   { name: "monthly", paymentsPerYear: 12 },
   { name: "fortnightly", paymentsPerYear: 26 },
@@ -15,7 +20,8 @@ interface Props {}
 const CalculatorPage: React.FC<Props> = (props) => {
   const [income, setIncome] = useState<number>(0);
   const [incomeTax, setIncomeTax] = useState<number>(0);
-  const [paymentFrequency, setPaymentFrequency] = useState<number>(1);
+  const [paymentFrequency, setPaymentFrequency] =
+    useState<PaymentFrequencyOption>(paymentFrequencyOptions[0]);
 
   const { send: sendIncomeTaxCalcRequest, ...incomeTaxCalcState } =
     useApiRequest<number, number>(incomeTaxApi.calculateIncomeTax);
@@ -42,8 +48,14 @@ const CalculatorPage: React.FC<Props> = (props) => {
       />
 
       <select
-        value={paymentFrequency}
-        onChange={(e) => setPaymentFrequency(parseInt(e.currentTarget.value))}
+        value={paymentFrequency.paymentsPerYear}
+        onChange={(e) =>
+          setPaymentFrequency(
+            paymentFrequencyOptions.find(
+              (pfo) => pfo.paymentsPerYear === parseInt(e.target.value)
+            )!
+          )
+        }
       >
         {paymentFrequencyOptions.map((pfo) => (
           <option value={pfo.paymentsPerYear}>{pfo.name}</option>
@@ -63,12 +75,10 @@ const CalculatorPage: React.FC<Props> = (props) => {
           </div>
           <div>
             You are receiving{" "}
-            {formatMoney((income - incomeTax) / paymentFrequency)} income{" "}
-            {
-              paymentFrequencyOptions.find(
-                (pfo) => paymentFrequency === pfo.paymentsPerYear
-              )!.name
-            }
+            {formatMoney(
+              (income - incomeTax) / paymentFrequency.paymentsPerYear
+            )}{" "}
+            income {paymentFrequency.name}
           </div>
         </>
       )}
