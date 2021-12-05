@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import incomeTaxApi from "../api/incomeTaxApi";
 import useApiRequest from "../hooks/useApiRequest";
 import { formatMoney } from "../utils/money";
+import Bucket from "./Bucket";
 
 interface PaymentFrequencyOption {
   name: string;
@@ -26,25 +27,19 @@ const CalculatorPage: React.FC<Props> = (props) => {
   const { send: sendIncomeTaxCalcRequest, ...incomeTaxCalcState } =
     useApiRequest<number, number>(incomeTaxApi.calculateIncomeTax);
 
-  const onIncomeChange = (str: string) => {
-    if (!/^[0-9]*$/.test(str)) {
-      return;
-    }
-
-    const asNumber = str === "" ? 0 : parseInt(str);
-    setIncome(asNumber);
-  };
-
   useEffect(() => {
     sendIncomeTaxCalcRequest(income).then((r) => setIncomeTax(r));
   }, [sendIncomeTaxCalcRequest, income]);
+
+  const incomePerPayPeriod =
+    (income - incomeTax) / paymentFrequency.paymentsPerYear;
 
   return (
     <div>
       <div>Please enter your annual income ($):</div>
       <input
         value={income}
-        onChange={(e) => onIncomeChange(e.currentTarget.value)}
+        onChange={(e) => setIncome(parseInt(e.currentTarget.value) || 0)}
       />
 
       <select
@@ -52,7 +47,7 @@ const CalculatorPage: React.FC<Props> = (props) => {
         onChange={(e) =>
           setPaymentFrequency(
             paymentFrequencyOptions.find(
-              (pfo) => pfo.paymentsPerYear === parseInt(e.target.value)
+              (pfo) => pfo.paymentsPerYear === parseInt(e.currentTarget.value)
             )!
           )
         }
@@ -74,12 +69,23 @@ const CalculatorPage: React.FC<Props> = (props) => {
             You are receiving {formatMoney(income - incomeTax)} income after tax
           </div>
           <div>
-            {`You are receiving ${formatMoney(
-              (income - incomeTax) / paymentFrequency.paymentsPerYear
-            )} income ${paymentFrequency.name}`}
+            {`You are receiving ${formatMoney(incomePerPayPeriod)} income ${
+              paymentFrequency.name
+            }`}
           </div>
         </>
       )}
+      <Bucket
+        name="Fire Extinguisher"
+        income={incomePerPayPeriod}
+        defaultPercentage={20}
+      />
+      <Bucket
+        name="Splurge"
+        income={incomePerPayPeriod}
+        defaultPercentage={10}
+      />
+      <Bucket name="Smile" income={incomePerPayPeriod} defaultPercentage={15} />
     </div>
   );
 };
