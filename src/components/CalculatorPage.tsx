@@ -74,11 +74,9 @@ const CalculatorPage: React.FC<Props> = (props) => {
             You are receiving {formatMoney(income - incomeTax)} income after tax
           </div>
           <div>
-            You are receiving{" "}
-            {formatMoney(
+            {`You are receiving ${formatMoney(
               (income - incomeTax) / paymentFrequency.paymentsPerYear
-            )}{" "}
-            income {paymentFrequency.name}
+            )} income ${paymentFrequency.name}`}
           </div>
         </>
       )}
