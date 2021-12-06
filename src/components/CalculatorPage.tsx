@@ -16,6 +16,11 @@ const paymentFrequencyOptions: PaymentFrequencyOption[] = [
   { name: "weekly", paymentsPerYear: 52 },
 ];
 
+interface BucketState {
+  name: string;
+  percentage: number;
+}
+
 interface Props {}
 
 const CalculatorPage: React.FC<Props> = (props) => {
@@ -23,6 +28,11 @@ const CalculatorPage: React.FC<Props> = (props) => {
   const [incomeTax, setIncomeTax] = useState<number>(0);
   const [paymentFrequency, setPaymentFrequency] =
     useState<PaymentFrequencyOption>(paymentFrequencyOptions[0]);
+  const [buckets, setBuckets] = useState<BucketState[]>([
+    { name: "Fire Extinguisher", percentage: 20 },
+    { name: "Splurge", percentage: 15 },
+    { name: "Smile", percentage: 10 },
+  ]);
 
   const { send: sendIncomeTaxCalcRequest, ...incomeTaxCalcState } =
     useApiRequest<number, number>(incomeTaxApi.calculateIncomeTax);
@@ -30,6 +40,18 @@ const CalculatorPage: React.FC<Props> = (props) => {
   useEffect(() => {
     sendIncomeTaxCalcRequest(income).then((r) => setIncomeTax(r));
   }, [sendIncomeTaxCalcRequest, income]);
+
+  const changeBucketPercentage = (bucketIndex: number, percentage: number) => {
+    if (bucketIndex < 0 || bucketIndex >= buckets.length) {
+      return;
+    }
+
+    const bucketCopy = { ...buckets[bucketIndex], percentage };
+    const newBuckets = [...buckets];
+    newBuckets[bucketIndex] = bucketCopy;
+
+    setBuckets(newBuckets);
+  };
 
   const incomePerPayPeriod =
     (income - incomeTax) / paymentFrequency.paymentsPerYear;
@@ -77,17 +99,20 @@ const CalculatorPage: React.FC<Props> = (props) => {
           </div>
         </>
       )}
-      <Bucket
-        name="Fire Extinguisher"
-        income={incomePerPayPeriod}
-        defaultPercentage={20}
-      />
-      <Bucket
-        name="Splurge"
-        income={incomePerPayPeriod}
-        defaultPercentage={10}
-      />
-      <Bucket name="Smile" income={incomePerPayPeriod} defaultPercentage={15} />
+
+      <hr />
+
+      {buckets.map((bucket, index) => (
+        <Bucket
+          name={bucket.name}
+          income={incomePerPayPeriod}
+          percentage={bucket.percentage}
+          onPercentageChange={(percentage: number) =>
+            changeBucketPercentage(index, percentage)
+          }
+          key={`${bucket.name}-${index}-${bucket.percentage}`}
+        />
+      ))}
     </div>
   );
 };
