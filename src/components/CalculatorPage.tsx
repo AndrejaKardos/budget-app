@@ -53,6 +53,12 @@ const CalculatorPage: React.FC<Props> = (props) => {
     setBuckets(newBuckets);
   };
 
+  const removeBucket = (bucket: BucketState) => {
+    const newBuckets = [...buckets].filter((b) => b !== bucket);
+
+    setBuckets(newBuckets);
+  };
+
   const incomePerPayPeriod =
     (income - incomeTax) / paymentFrequency.paymentsPerYear;
 
@@ -110,6 +116,7 @@ const CalculatorPage: React.FC<Props> = (props) => {
           onPercentageChange={(percentage: number) =>
             changeBucketPercentage(index, percentage)
           }
+          onBucketDelete={() => removeBucket(bucket)}
           key={`${bucket.name}-${index}-${bucket.percentage}`}
         />
       ))}

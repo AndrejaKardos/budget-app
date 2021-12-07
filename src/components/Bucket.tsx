@@ -6,6 +6,7 @@ interface Props {
   income: number;
   percentage: number;
   onPercentageChange: (percentage: number) => void;
+  onBucketDelete: () => void;
 }
 
 const Bucket: React.FC<Props> = ({
@@ -13,6 +14,7 @@ const Bucket: React.FC<Props> = ({
   income,
   percentage,
   onPercentageChange,
+  onBucketDelete,
 }) => {
   return (
     <div>
@@ -24,6 +26,7 @@ const Bucket: React.FC<Props> = ({
           onPercentageChange(parseInt(e.currentTarget.value) || 0)
         }
       />
+      <button onClick={() => onBucketDelete()}>Delete Bucket</button>
     </div>
   );
 };
