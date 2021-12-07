@@ -53,6 +53,14 @@ const CalculatorPage: React.FC<Props> = (props) => {
     setBuckets(newBuckets);
   };
 
+  const changeBucketName = (bucketIndex: number, name: string) => {
+    const bucketCopy = { ...buckets[bucketIndex], name };
+    const newBuckets = [...buckets];
+    newBuckets[bucketIndex] = bucketCopy;
+
+    setBuckets(newBuckets);
+  };
+
   const removeBucket = (bucket: BucketState) => {
     const newBuckets = [...buckets].filter((b) => b !== bucket);
 
@@ -116,6 +124,7 @@ const CalculatorPage: React.FC<Props> = (props) => {
           onPercentageChange={(percentage: number) =>
             changeBucketPercentage(index, percentage)
           }
+          onNameChange={(name: string) => changeBucketName(index, name)}
           onBucketDelete={() => removeBucket(bucket)}
           key={index}
         />

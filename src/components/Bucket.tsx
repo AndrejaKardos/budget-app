@@ -6,6 +6,7 @@ interface Props {
   income: number;
   percentage: number;
   onPercentageChange: (percentage: number) => void;
+  onNameChange: (name: string) => void;
   onBucketDelete: () => void;
 }
 
@@ -15,10 +16,14 @@ const Bucket: React.FC<Props> = ({
   percentage,
   onPercentageChange,
   onBucketDelete,
+  onNameChange,
 }) => {
   return (
     <div>
-      <div>{name}</div>
+      <input
+        value={name}
+        onChange={(e) => onNameChange(e.currentTarget.value)}
+      />
       <div>{formatMoney((income * percentage) / 100)}</div>
       <input
         value={percentage}
