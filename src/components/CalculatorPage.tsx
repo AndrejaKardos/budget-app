@@ -117,7 +117,7 @@ const CalculatorPage: React.FC<Props> = (props) => {
             changeBucketPercentage(index, percentage)
           }
           onBucketDelete={() => removeBucket(bucket)}
-          key={`${bucket.name}-${index}-${bucket.percentage}`}
+          key={index}
         />
       ))}
 
