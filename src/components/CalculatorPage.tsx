@@ -113,6 +113,16 @@ const CalculatorPage: React.FC<Props> = (props) => {
           key={`${bucket.name}-${index}-${bucket.percentage}`}
         />
       ))}
+
+      {
+        <button
+          onClick={() =>
+            setBuckets([...buckets, { name: "Bucket", percentage: 0 }])
+          }
+        >
+          Add Bucket
+        </button>
+      }
     </div>
   );
 };
