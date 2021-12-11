@@ -1,5 +1,4 @@
 import React from "react";
-import { formatMoney } from "../utils/money";
 
 interface Props {
   name: string;
@@ -24,7 +23,17 @@ const Bucket: React.FC<Props> = ({
         value={name}
         onChange={(e) => onNameChange(e.currentTarget.value)}
       />
-      <div>{formatMoney((income * percentage) / 100)}</div>
+      <input
+        value={(income * percentage) / 100}
+        onChange={(e) => {
+          if (income === 0) {
+            return;
+          }
+          const parsedValue = parseInt(e.currentTarget.value) || 0;
+          const newPercentage = (parsedValue / income) * 100;
+          onPercentageChange(newPercentage);
+        }}
+      />
       <input
         value={percentage}
         onChange={(e) =>
