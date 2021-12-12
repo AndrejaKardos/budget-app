@@ -17,6 +17,14 @@ const Bucket: React.FC<Props> = ({
   onBucketDelete,
   onNameChange,
 }) => {
+  const onBucketIncomeChange = (bucketIncome: number) => {
+    if (income === 0) {
+      return;
+    }
+    const newPercentage = (bucketIncome / income) * 100;
+    onPercentageChange(newPercentage);
+  };
+
   return (
     <div>
       <input
@@ -24,18 +32,13 @@ const Bucket: React.FC<Props> = ({
         onChange={(e) => onNameChange(e.currentTarget.value)}
       />
       <input
-        value={(income * percentage) / 100}
-        onChange={(e) => {
-          if (income === 0) {
-            return;
-          }
-          const parsedValue = parseInt(e.currentTarget.value) || 0;
-          const newPercentage = (parsedValue / income) * 100;
-          onPercentageChange(newPercentage);
-        }}
+        value={Math.round(income * percentage) / 100}
+        onChange={(e) =>
+          onBucketIncomeChange(parseInt(e.currentTarget.value) || 0)
+        }
       />
       <input
-        value={percentage}
+        value={Math.round(percentage * 100) / 100}
         onChange={(e) =>
           onPercentageChange(parseInt(e.currentTarget.value) || 0)
         }
