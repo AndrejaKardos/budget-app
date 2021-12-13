@@ -3,6 +3,8 @@ import incomeTaxApi from "../api/incomeTaxApi";
 import useApiRequest from "../hooks/useApiRequest";
 import { formatMoney } from "../utils/money";
 import Bucket from "./Bucket";
+import { Button } from "react-bootstrap";
+import "./CalculatorPage.scss";
 
 interface PaymentFrequencyOption {
   name: string;
@@ -116,28 +118,30 @@ const CalculatorPage: React.FC<Props> = (props) => {
 
       <hr />
 
-      {buckets.map((bucket, index) => (
-        <Bucket
-          name={bucket.name}
-          income={incomePerPayPeriod}
-          percentage={bucket.percentage}
-          onPercentageChange={(percentage: number) =>
-            changeBucketPercentage(index, percentage)
-          }
-          onNameChange={(name: string) => changeBucketName(index, name)}
-          onBucketDelete={() => removeBucket(bucket)}
-          key={index}
-        />
-      ))}
+      <div className="calculator-page__bucket-group">
+        {buckets.map((bucket, index) => (
+          <Bucket
+            name={bucket.name}
+            income={incomePerPayPeriod}
+            percentage={bucket.percentage}
+            onPercentageChange={(percentage: number) =>
+              changeBucketPercentage(index, percentage)
+            }
+            onNameChange={(name: string) => changeBucketName(index, name)}
+            onBucketDelete={() => removeBucket(bucket)}
+            key={index}
+          />
+        ))}
+      </div>
 
       {
-        <button
+        <Button
           onClick={() =>
             setBuckets([...buckets, { name: "Bucket", percentage: 0 }])
           }
         >
           Add Bucket
-        </button>
+        </Button>
       }
     </div>
   );

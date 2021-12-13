@@ -1,4 +1,6 @@
 import React from "react";
+import { Button, Card, FormControl, InputGroup } from "react-bootstrap";
+import "./Bucket.scss";
 
 interface Props {
   name: string;
@@ -26,25 +28,38 @@ const Bucket: React.FC<Props> = ({
   };
 
   return (
-    <div>
-      <input
-        value={name}
-        onChange={(e) => onNameChange(e.currentTarget.value)}
-      />
-      <input
-        value={Math.round(income * percentage) / 100}
-        onChange={(e) =>
-          onBucketIncomeChange(parseInt(e.currentTarget.value) || 0)
-        }
-      />
-      <input
-        value={Math.round(percentage * 100) / 100}
-        onChange={(e) =>
-          onPercentageChange(parseInt(e.currentTarget.value) || 0)
-        }
-      />
-      <button onClick={() => onBucketDelete()}>Delete Bucket</button>
-    </div>
+    <Card className="bucket">
+      <Card.Body>
+        <Card.Title className="bucket__title">
+          <FormControl
+            value={name}
+            onChange={(e) => onNameChange(e.currentTarget.value)}
+          />
+        </Card.Title>
+        <InputGroup>
+          <InputGroup.Text>$</InputGroup.Text>
+          <FormControl
+            value={Math.round(income * percentage) / 100}
+            onChange={(e) =>
+              onBucketIncomeChange(parseInt(e.currentTarget.value) || 0)
+            }
+          />
+        </InputGroup>
+        <InputGroup>
+          <FormControl
+            className="bucket__text-percentage"
+            value={Math.round(percentage * 100) / 100}
+            onChange={(e) =>
+              onPercentageChange(parseInt(e.currentTarget.value) || 0)
+            }
+          />
+          <InputGroup.Text>%</InputGroup.Text>
+        </InputGroup>
+        <Button variant="outline-danger" onClick={() => onBucketDelete()}>
+          Delete Bucket
+        </Button>
+      </Card.Body>
+    </Card>
   );
 };
 
