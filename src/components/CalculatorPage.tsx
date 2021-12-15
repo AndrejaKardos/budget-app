@@ -81,9 +81,10 @@ const CalculatorPage: React.FC<Props> = (props) => {
     (income - incomeTax - medicareLevy) / paymentFrequency.paymentsPerYear;
 
   return (
-    <div>
-      <div>Please enter your annual income ($):</div>
+    <div className="calculator-page">
+      <div>Please enter your annual income:</div>
       <InputGroup className="calculator-page__input-group">
+        <InputGroup.Text>$</InputGroup.Text>
         <FormControl
           value={income}
           onChange={(e) => setIncome(parseInt(e.currentTarget.value) || 0)}
@@ -123,27 +124,29 @@ const CalculatorPage: React.FC<Props> = (props) => {
 
       <hr />
 
-      <div className="calculator-page__bucket-group">
-        {buckets.map((bucket, index) => (
-          <Bucket
-            name={bucket.name}
-            income={incomePerPayPeriod}
-            percentage={bucket.percentage}
-            onPercentageChange={(percentage: number) =>
-              changeBucketPercentage(index, percentage)
-            }
-            onNameChange={(name: string) => changeBucketName(index, name)}
-            onBucketDelete={() => removeBucket(bucket)}
-            key={index}
-          />
-        ))}
+      <div className="calculator-page__bucket-container">
+        <div className="calculator-page__bucket-group">
+          {buckets.map((bucket, index) => (
+            <Bucket
+              name={bucket.name}
+              income={incomePerPayPeriod}
+              percentage={bucket.percentage}
+              onPercentageChange={(percentage: number) =>
+                changeBucketPercentage(index, percentage)
+              }
+              onNameChange={(name: string) => changeBucketName(index, name)}
+              onBucketDelete={() => removeBucket(bucket)}
+              key={index}
+            />
+          ))}
+        </div>
       </div>
-
       {
         <Button
           onClick={() =>
             setBuckets([...buckets, { name: "Bucket", percentage: 0 }])
           }
+          variant="success"
         >
           Add Bucket
         </Button>
