@@ -75,8 +75,10 @@ const CalculatorPage: React.FC<Props> = (props) => {
     setBuckets(newBuckets);
   };
 
+  const medicareLevy = income * 0.02;
+
   const incomePerPayPeriod =
-    (income - incomeTax) / paymentFrequency.paymentsPerYear;
+    (income - incomeTax - medicareLevy) / paymentFrequency.paymentsPerYear;
 
   return (
     <div>
@@ -108,7 +110,8 @@ const CalculatorPage: React.FC<Props> = (props) => {
         <>
           <div>You are paying {formatMoney(incomeTax)} in income tax</div>
           <div>
-            You are receiving {formatMoney(income - incomeTax)} income after tax
+            You are receiving {formatMoney(income - incomeTax - medicareLevy)}{" "}
+            income after tax
           </div>
           <div>
             {`You are receiving ${formatMoney(incomePerPayPeriod)} income ${
