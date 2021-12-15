@@ -3,7 +3,13 @@ import incomeTaxApi from "../api/incomeTaxApi";
 import useApiRequest from "../hooks/useApiRequest";
 import { formatMoney } from "../utils/money";
 import Bucket from "./Bucket";
-import { Button } from "react-bootstrap";
+import {
+  Button,
+  Dropdown,
+  DropdownButton,
+  FormControl,
+  InputGroup,
+} from "react-bootstrap";
 import "./CalculatorPage.scss";
 
 interface PaymentFrequencyOption {
@@ -75,27 +81,23 @@ const CalculatorPage: React.FC<Props> = (props) => {
   return (
     <div>
       <div>Please enter your annual income ($):</div>
-      <input
-        value={income}
-        onChange={(e) => setIncome(parseInt(e.currentTarget.value) || 0)}
-      />
-
-      <select
-        value={paymentFrequency.paymentsPerYear}
-        onChange={(e) =>
-          setPaymentFrequency(
-            paymentFrequencyOptions.find(
-              (pfo) => pfo.paymentsPerYear === parseInt(e.currentTarget.value)
-            )!
-          )
-        }
-      >
-        {paymentFrequencyOptions.map((pfo) => (
-          <option key={pfo.paymentsPerYear} value={pfo.paymentsPerYear}>
-            {pfo.name}
-          </option>
-        ))}
-      </select>
+      <InputGroup className="calculator-page__input-group">
+        <FormControl
+          value={income}
+          onChange={(e) => setIncome(parseInt(e.currentTarget.value) || 0)}
+        />
+        <DropdownButton title={paymentFrequency.name} variant="outline-primary">
+          {paymentFrequencyOptions.map((pfo) => (
+            <Dropdown.Item
+              onClick={() => setPaymentFrequency(pfo)}
+              key={pfo.paymentsPerYear}
+              active={pfo === paymentFrequency}
+            >
+              {pfo.name}
+            </Dropdown.Item>
+          ))}
+        </DropdownButton>
+      </InputGroup>
 
       <div>Your income is: {formatMoney(income)}</div>
 
