@@ -55,9 +55,11 @@ const Bucket: React.FC<Props> = ({
           />
           <InputGroup.Text>%</InputGroup.Text>
         </InputGroup>
-        <Button variant="outline-danger" onClick={() => onBucketDelete()}>
-          Delete Bucket
-        </Button>
+        <InputGroup className="bucket__button-group">
+          <Button variant="outline-danger" onClick={() => onBucketDelete()}>
+            Delete Bucket
+          </Button>
+        </InputGroup>
       </Card.Body>
     </Card>
   );

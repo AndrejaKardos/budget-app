@@ -6,3 +6,9 @@
 .bucket__text-percentage {
   text-align: right;
 }
+
+.bucket__button-group {
+  display: flex;
+  width: max-content;
+  justify-content: center;
+}
