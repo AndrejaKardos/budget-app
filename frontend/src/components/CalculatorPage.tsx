@@ -143,6 +143,7 @@ const CalculatorPage: React.FC<Props> = (props) => {
       </div>
       {
         <Button
+          className="calculator-page__add-button"
           onClick={() =>
             setBuckets([...buckets, { name: "Bucket", percentage: 0 }])
           }
