@@ -9,9 +9,11 @@
 }
 
 .calculator-page__bucket-group {
+  max-width: 770px;
   display: flex;
   flex-wrap: wrap;
   align-self: center;
+  gap: 10px;
 }
 
 .calculator-page__input-group {
