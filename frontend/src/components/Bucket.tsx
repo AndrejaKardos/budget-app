@@ -29,14 +29,14 @@ const Bucket: React.FC<Props> = ({
 
   return (
     <Card className="bucket">
-      <Card.Body>
+      <Card.Body className="bucket__body bucket__group--margin">
         <Card.Title className="bucket__title">
           <FormControl
             value={name}
             onChange={(e) => onNameChange(e.currentTarget.value)}
           />
         </Card.Title>
-        <InputGroup>
+        <InputGroup className="bucket__group--margin">
           <InputGroup.Text>$</InputGroup.Text>
           <FormControl
             value={Math.round(income * percentage) / 100}
@@ -45,7 +45,7 @@ const Bucket: React.FC<Props> = ({
             }
           />
         </InputGroup>
-        <InputGroup>
+        <InputGroup className="bucket__group--margin">
           <FormControl
             className="bucket__text-percentage"
             value={Math.round(percentage * 100) / 100}

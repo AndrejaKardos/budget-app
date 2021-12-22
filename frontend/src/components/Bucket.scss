@@ -3,6 +3,10 @@
   padding: 16px;
 }
 
+.bucket__group--margin {
+  margin-bottom: 20px;
+}
+
 .bucket__text-percentage {
   text-align: right;
 }
@@ -11,4 +15,5 @@
   display: flex;
   width: max-content;
   justify-content: center;
+  margin: 30px 0 -20px 0;
 }
