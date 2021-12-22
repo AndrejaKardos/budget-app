@@ -45,14 +45,16 @@ const Bucket: React.FC<Props> = ({
             }
           />
         </InputGroup>
-        <InputGroup className="bucket__group--margin">
-          <FormControl
-            className="bucket__text-percentage"
-            value={Math.round(percentage * 100) / 100}
-            onChange={(e) =>
-              onPercentageChange(parseInt(e.currentTarget.value) || 0)
-            }
-          />
+        <InputGroup className="bucket__group--margin bucket__group--align">
+          <div className="bucket__percentage-container">
+            <FormControl
+              className="bucket__text-percentage"
+              value={Math.round(percentage * 100) / 100}
+              onChange={(e) =>
+                onPercentageChange(parseInt(e.currentTarget.value) || 0)
+              }
+            />
+          </div>
           <InputGroup.Text>%</InputGroup.Text>
         </InputGroup>
         <InputGroup className="bucket__button-group">
