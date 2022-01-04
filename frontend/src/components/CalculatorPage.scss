@@ -21,6 +21,15 @@
   max-width: 300px;
 }
 
+.calculator-page__income {
+  display: flex;
+  align-items: center;
+}
+
+.calculator-page__income--dropdown {
+  margin-left: 5px;
+}
+
 .calculator-page__add-button {
   margin: 40px;
 }

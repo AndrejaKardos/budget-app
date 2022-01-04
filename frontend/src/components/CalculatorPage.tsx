@@ -89,17 +89,6 @@ const CalculatorPage: React.FC<Props> = (props) => {
           value={income}
           onChange={(e) => setIncome(parseInt(e.currentTarget.value) || 0)}
         />
-        <DropdownButton title={paymentFrequency.name} variant="outline-primary">
-          {paymentFrequencyOptions.map((pfo) => (
-            <Dropdown.Item
-              onClick={() => setPaymentFrequency(pfo)}
-              key={pfo.paymentsPerYear}
-              active={pfo === paymentFrequency}
-            >
-              {pfo.name}
-            </Dropdown.Item>
-          ))}
-        </DropdownButton>
       </InputGroup>
 
       <div>Your income is: {formatMoney(income)}</div>
@@ -109,15 +98,30 @@ const CalculatorPage: React.FC<Props> = (props) => {
       )}
       {incomeTaxCalcState.isOk && (
         <>
-          <div>You are paying {formatMoney(incomeTax)} in income tax</div>
           <div>
-            You are receiving {formatMoney(income - incomeTax - medicareLevy)}{" "}
-            income after tax
+            You are paying {formatMoney(incomeTax)} in income tax annually
           </div>
           <div>
-            {`You are receiving ${formatMoney(incomePerPayPeriod)} income ${
-              paymentFrequency.name
-            }`}
+            You are receiving {formatMoney(income - incomeTax - medicareLevy)}{" "}
+            annual income after tax
+          </div>
+          <div className="calculator-page__income">
+            {`You are receiving ${formatMoney(incomePerPayPeriod)} income `}
+            <DropdownButton
+              className="calculator-page__income--dropdown"
+              title={paymentFrequency.name}
+              variant="outline-primary"
+            >
+              {paymentFrequencyOptions.map((pfo) => (
+                <Dropdown.Item
+                  onClick={() => setPaymentFrequency(pfo)}
+                  key={pfo.paymentsPerYear}
+                  active={pfo === paymentFrequency}
+                >
+                  {pfo.name}
+                </Dropdown.Item>
+              ))}
+            </DropdownButton>
           </div>
         </>
       )}
