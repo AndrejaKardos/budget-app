@@ -83,13 +83,16 @@ const CalculatorPage: React.FC<Props> = (props) => {
   return (
     <div className="calculator-page">
       <div>Please enter your annual income:</div>
-      <InputGroup className="calculator-page__input-group">
-        <InputGroup.Text>$</InputGroup.Text>
-        <FormControl
-          value={income}
-          onChange={(e) => setIncome(parseInt(e.currentTarget.value) || 0)}
-        />
-      </InputGroup>
+      <div className="calculator-page__input-container">
+        <InputGroup className="calculator-page__input-group">
+          <InputGroup.Text>$</InputGroup.Text>
+          <FormControl
+            className="calculator-page__input-container"
+            value={income}
+            onChange={(e) => setIncome(parseInt(e.currentTarget.value) || 0)}
+          />
+        </InputGroup>
+      </div>
 
       <div>Your income is: {formatMoney(income)}</div>
 
