@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import incomeTaxApi from "../api/incomeTaxApi";
 import useApiRequest from "../hooks/useApiRequest";
+import transactionApi from "../api/transactionApi";
 import { formatMoney } from "../utils/money";
 import Bucket from "./Bucket";
 import {
@@ -79,6 +80,8 @@ const CalculatorPage: React.FC<Props> = (props) => {
 
   const incomePerPayPeriod =
     (income - incomeTax - medicareLevy) / paymentFrequency.paymentsPerYear;
+
+  transactionApi.getAllTransactions();
 
   return (
     <div className="calculator-page">
