@@ -11,10 +11,15 @@ const useApiRequest = <TRequest, TResponse>(
   const send = useCallback(
     (request: TRequest) => {
       setRequestState(ApiStatus.LOADING);
-      return sendRequest(request).then((r) => {
-        setRequestState(ApiStatus.OK);
-        return r;
-      });
+      return sendRequest(request)
+        .then((r) => {
+          setRequestState(ApiStatus.OK);
+          return r;
+        })
+        .catch((err) => {
+          setRequestState(ApiStatus.FAILED);
+          throw err;
+        });
     },
     [setRequestState, sendRequest]
   );
