@@ -10,6 +10,7 @@ import {
   DropdownButton,
   FormControl,
   InputGroup,
+  Table,
 } from "react-bootstrap";
 import "./CalculatorPage.scss";
 
@@ -30,6 +31,12 @@ interface BucketState {
   percentage: number;
 }
 
+interface Transaction {
+  id: string;
+  description: string;
+  amountCents: number;
+}
+
 interface Props {}
 
 const CalculatorPage: React.FC<Props> = (props) => {
@@ -42,6 +49,8 @@ const CalculatorPage: React.FC<Props> = (props) => {
     { name: "Splurge", percentage: 15 },
     { name: "Smile", percentage: 10 },
   ]);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+
 
   const { send: sendIncomeTaxCalcRequest, ...incomeTaxCalcState } =
     useApiRequest<number, number>(incomeTaxApi.calculateIncomeTax);
@@ -49,6 +58,15 @@ const CalculatorPage: React.FC<Props> = (props) => {
   useEffect(() => {
     sendIncomeTaxCalcRequest(income).then((r) => setIncomeTax(r));
   }, [sendIncomeTaxCalcRequest, income]);
+
+  const { send: sendGetAllTransactions, ...getAllTransactionsState } =
+    useApiRequest<void, Transaction[]>(transactionApi.getAllTransactions);
+
+  useEffect(() => {
+    sendGetAllTransactions()
+      .then((r) => setTransactions(r))
+      .catch(() => {});
+  }, [sendGetAllTransactions]);
 
   const changeBucketPercentage = (bucketIndex: number, percentage: number) => {
     if (bucketIndex < 0 || bucketIndex >= buckets.length) {
@@ -80,8 +98,6 @@ const CalculatorPage: React.FC<Props> = (props) => {
 
   const incomePerPayPeriod =
     (income - incomeTax - medicareLevy) / paymentFrequency.paymentsPerYear;
-
-  transactionApi.getAllTransactions();
 
   return (
     <div className="calculator-page">
@@ -162,6 +178,26 @@ const CalculatorPage: React.FC<Props> = (props) => {
           Add Bucket
         </Button>
       }
+      {transactions && (
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <td>ID</td>
+              <td>Description</td>
+              <td>Amount</td>
+            </tr>
+          </thead>
+          <tbody>
+            {transactions.map((r) => (
+              <tr>
+                <td>{r.id}</td>
+                <td>{r.description}</td>
+                <td>${r.amountCents / 100}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      )}
     </div>
   );
 };
