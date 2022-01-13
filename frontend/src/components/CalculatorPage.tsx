@@ -178,15 +178,22 @@ const CalculatorPage: React.FC<Props> = (props) => {
           Add Bucket
         </Button>
       }
-      {transactions && (
-        <Table striped bordered hover>
-          <thead>
-            <tr>
-              <td>ID</td>
-              <td>Description</td>
-              <td>Amount</td>
-            </tr>
-          </thead>
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <td>ID</td>
+            <td>Description</td>
+            <td>Amount</td>
+          </tr>
+        </thead>
+        {transactions.length === 0 && (
+          <tbody>
+            <tbody>
+              <tr>No transactions found</tr>
+            </tbody>
+          </tbody>
+        )}
+        {transactions.length > 0 && (
           <tbody>
             {transactions.map((r) => (
               <tr>
@@ -196,8 +203,8 @@ const CalculatorPage: React.FC<Props> = (props) => {
               </tr>
             ))}
           </tbody>
-        </Table>
-      )}
+        )}
+      </Table>
     </div>
   );
 };
